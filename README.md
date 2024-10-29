@@ -1,23 +1,26 @@
 # uConn
 # KOMUNIKATOR (APLIKACJA WEBOWA)
----------------------------------------------------
+
+## INFO
 Nazwa projektu:        uConn
 Repozytorium projektu: github.com/kmfns/uConn
 Trello projektu:       
----------------------------------------------------
+
+## LIBS
 Jezyk programowania:   Typescript
 Biblioteka:            React
 Frameworki:            Socket.io, Prisma, Tailwind
 Jezyk baz danych:      MySQL
----------------------------------------------------
+
+## TEAM
 Project Team:
  Scrum Master          Miłosz
  Frontend developer    Bohdan
  Backend developer     Ivan
  Projektant MySQL      Szymon
  UI Designer           Dmytro
----------------------------------------------------
-Funkcje:
+
+## FUNCTIONALITY:
  - Możliwość tworzenia konta użytkownika
   - na podstawie podanego emailu
  - Możliwość tworzenia własnych serverów
