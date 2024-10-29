@@ -14,11 +14,11 @@
 
 ## TEAM
 Project Team:
- - Scrum Master          Miłosz
- - Frontend developer    Bohdan
- - Backend developer     Ivan
- - Projektant MySQL      Szymon
- - UI Designer           Dmytro
+ - Scrum Master:          Miłosz
+ - Frontend developer:    Bohdan
+ - Backend developer:     Ivan
+ - Projektant MySQL:      Szymon
+ - UI Designer:           Dmytro
 
 ## FUNCTIONALITY:
  - Możliwość tworzenia konta użytkownika
