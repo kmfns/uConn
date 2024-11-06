@@ -17,7 +17,7 @@ Project Team:
  - Scrum Master:          Miłosz
  - Frontend developer:    Bohdan
  - Backend developer:     Ivan
- - Projektant MySQL:      Szymon
+ - Projektant MySQL:      Szymon P
  - UI Designer:           Dmytro
 
 ## FUNCTIONALITY:
