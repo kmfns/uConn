@@ -18,7 +18,7 @@ Project Team:
  - Frontend developer:    Bohdan
  - Backend developer:     Ivan
  - Projektant MySQL:      Szymon P
- - UI Designer:           Dmytro
+ - UI Designer:           Dmytro Z
 
 ## FUNCTIONALITY:
  - Możliwość tworzenia konta użytkownika
