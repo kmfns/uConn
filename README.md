@@ -10,7 +10,7 @@
 - Jezyk programowania:   Typescript
 - Biblioteka:            React
 - Frameworki:            Socket.io, Prisma, Tailwind
-- Jezyk baz danych:      MySQL
+- Jezyk baz danych:      PostgreSQL
 
 ## TEAM
 Project Team:
