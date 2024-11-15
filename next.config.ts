@@ -1,7 +1,12 @@
-import type { NextConfig } from "next";
+import { NextConfig } from 'next';
 
 const nextConfig: NextConfig = {
-  /* config options here */
+  images: {
+    domains: [
+      'uploadthing.com',
+      'utfs.io'  // Added this line
+    ]
+  },
 };
 
 export default nextConfig;
