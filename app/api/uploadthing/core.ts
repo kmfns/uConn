@@ -1,34 +1,41 @@
 import { createUploadthing, type FileRouter } from "uploadthing/next";
 import { UploadThingError } from "uploadthing/server";
+import { getAuth } from "@clerk/nextjs/server"; // Import getAuth from Clerk for authentication
+import { NextRequest } from "next/server"; // Import NextRequest for proper typing
 
+// Tworzymy instancję uploadthing
 const f = createUploadthing();
 
-const auth = (req: Request) => ({ id: "fakeId" }); // Fake auth function
+// Funkcja autentykacji użytkownika
+const auth = async (req: NextRequest) => {
+  // Używamy getAuth z Clerk do sprawdzenia użytkownika
+  const { userId } = getAuth(req); // getAuth returns an object, and we can access userId directly
+  return userId; // Return userId or null if not authenticated
+};
 
-// FileRouter for your app, can contain multiple FileRoutes
+// Tworzymy router plików
 export const ourFileRouter = {
-  // Define as many FileRoutes as you like, each with a unique routeSlug
+  // Endpoint do przesyłania obrazów
   imageUploader: f({ image: { maxFileSize: "4MB" } })
-    // Set permissions and file types for this FileRoute
+    // Middleware do autentykacji
     .middleware(async ({ req }) => {
-      // This code runs on your server before upload
-      const user = await auth(req);
+      const userId = await auth(req as NextRequest);
 
-      // If you throw, the user will not be able to upload
-      if (!user) throw new UploadThingError("Unauthorized");
+      if (!userId) {
+        throw new UploadThingError("Unauthorized");
+      }
 
-      // Whatever is returned here is accessible in onUploadComplete as `metadata`
-      return { userId: user.id };
+      return { userId }; // Przechowujemy ID użytkownika w metadanych
     })
+    // Po zakończeniu uploadu
     .onUploadComplete(async ({ metadata, file }) => {
-      // This code RUNS ON YOUR SERVER after upload
       console.log("Upload complete for userId:", metadata.userId);
+      console.log("File URL:", file.url);
 
-      console.log("file url", file.url);
-
-      // !!! Whatever is returned here is sent to the clientside `onClientUploadComplete` callback
-      return { uploadedBy: metadata.userId };
+      // Zwracamy dane po zakończeniu uploadu
+      return { uploadedBy: metadata.userId, fileUrl: file.url };
     }),
 } satisfies FileRouter;
 
+// Eksportujemy typ dla front-endu
 export type OurFileRouter = typeof ourFileRouter;

@@ -1,5 +1,6 @@
+// pages/login/[[...rest]].tsx
 import { SignIn } from '@clerk/nextjs';
 
-export default function Page() {
-  return <SignIn/>;
+export default function LoginPage() {
+  return <SignIn />;
 }

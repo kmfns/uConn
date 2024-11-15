@@ -1,41 +1,33 @@
+// components/file-upload.tsx
+
 "use client";
 
-import { X } from "lucide-react";
-import Image from "next/image";
-import { UploadDropzone } from "@/lib/uploadthing"; // Import z odpowiednią ścieżką
-import "@uploadthing/react/styles.css";
+import { useDropzone } from "@uploadthing/react"; // Importuj komponent z uploadthing
+import { generateClientDropzoneAccept } from "uploadthing/client"; // Funkcja generująca akceptowane typy plików
 
 interface FileUploadProps {
   onChange: (url?: string) => void;
   value: string;
-  endpoint: "imageUploader"; // Zmiana typu endpoint na 'imageUploader'
+  endpoint: "imageUploader" | "serverImage" | "messageFile"; // Endpointy uploadthing
 }
 
 export const FileUpload = ({ onChange, value, endpoint }: FileUploadProps) => {
-    const fileType = value.split(".")[0];
-  
-    if (value && fileType !== "pdf") {
-      return (
-        <div className="relative h-20 w-20">
-          <Image fill src={value} alt="Upload" className="rounded-full" />
-          <button
-            onClick={() => onChange("")}
-            className="bg-rose-500 text-white p-1 rounded-full 
-            absolute top-0 right-0 shadow-sm"
-          >
-            <X className="h-4 w-4" />
-          </button>
-        </div>
-      );
-    }
+  const { getRootProps, getInputProps } = useDropzone({
+    accept: generateClientDropzoneAccept(["image/jpeg", "image/png"]), // Określamy akceptowane typy plików
+    onDrop: (acceptedFiles) => {
+      const file = acceptedFiles[0]; // Wybieramy pierwszy plik
+      if (file) {
+        // Zaczynamy upload pliku
+        onChange(URL.createObjectURL(file)); // Zmieniamy URL po załadowaniu pliku
+      }
+    },
+  });
 
   return (
-    <UploadDropzone
-      endpoint={endpoint} // Przekazujemy endpoint 'imageUploader'
-      onClientUploadComplete={(res) => {
-        onChange(res?.[0].url); // Aktualizujemy URL po zakończeniu uploadu
-      }}
-      onUploadError={(error: Error) => console.log(error)} // Obsługa błędów
-    />
+    <div {...getRootProps()} className="border-2 border-dashed p-4 text-center">
+      <input {...getInputProps()} />
+      <p>Przeciągnij plik tutaj lub kliknij, aby wybrać</p>
+      {value && <img src={value} alt="Uploaded preview" className="w-20 h-20 mt-4" />}
+    </div>
   );
 };

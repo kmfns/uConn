@@ -1,13 +1,8 @@
-import { clerkMiddleware, createRouteMatcher } from '@clerk/nextjs/server';
+import { clerkMiddleware } from '@clerk/nextjs/server';
 
-const isPublicRoute = createRouteMatcher(['/login(.*)', '/sign-up(.*)']);
-export default clerkMiddleware((auth, request) => {
-  if (!isPublicRoute(request)) {
-    // This automatically ensures that the user is authenticated
-    auth();
-  }
-});
+export default clerkMiddleware();
 
+// You can specify routes to protect in the `matcher` export
 export const config = {
-  matcher: ['/((?!.*\\..*|_next).*)', '/', '/(api|trpc)(.*)'],
+  matcher: ['/((?!api/uploadthing).*|/)', '/(api|trpc)(.*)'], // Define which routes Clerk middleware should apply to
 };
