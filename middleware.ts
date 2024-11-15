@@ -1,10 +1,8 @@
-import { clerkMiddleware } from "@clerk/nextjs/server";
+import { clerkMiddleware } from '@clerk/nextjs/server';
 
 export default clerkMiddleware();
 
+// You can specify routes to protect in the `matcher` export
 export const config = {
-  matcher: [
-    '/((?!_next|[^?]*\\.(?:html?|css|js(?!on)|jpe?g|webp|png|gif|svg|ttf|woff2?|ico|csv|docx?|xlsx?|zip|webmanifest)).*)',
-    '/(api|trpc)(.*)',
-    ],
+  matcher: ['/((?!api/uploadthing).*|/)', '/(api|trpc)(.*)'], // Define which routes Clerk middleware should apply to
 };
