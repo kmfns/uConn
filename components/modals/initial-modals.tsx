@@ -19,7 +19,7 @@ const formSchema = z.object({
   imageUrl: z.string().url({ message: "A valid image URL is required." }),
 });
 
-export function InitialModal() {
+export const InitialModal = () => {
   const [isMounted, setIsMounted] = useState(false); 
   const router = useRouter();
 
