@@ -6,40 +6,27 @@ import * as z from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import axios from "axios";
 import { useRouter } from "next/navigation";
-import { useAuth } from "@clerk/nextjs";
 
-import {
-  Dialog,
-  DialogContent,
-  DialogDescription,
-  DialogFooter,
-  DialogHeader,
-  DialogTitle,
-} from "@/components/ui/dialog";
-import {
-  Form,
-  FormControl,
-  FormField,
-  FormItem,
-  FormLabel,
-  FormMessage,
-} from "@/components/ui/form";
+import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle } from "@/components/ui/dialog";
+import { Form, FormControl, FormField,FormItem, FormLabel, FormMessage } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { FileUpload } from "@/components/file-upload";
 
-// Define the form schema
+
 const formSchema = z.object({
   name: z.string().min(1, { message: "Server name is required." }),
   imageUrl: z.string().url({ message: "A valid image URL is required." }),
 });
 
 export function InitialModal() {
-  const [isMounted, setIsMounted] = useState(false); // Handle SSR issues
-  const { getToken } = useAuth(); // Use Clerk's `useAuth` hook at the top level
+  const [isMounted, setIsMounted] = useState(false); 
   const router = useRouter();
 
-  // Initialize the form
+  useEffect(() => {
+    setIsMounted(true); 
+  }, []);
+
   const form = useForm({
     resolver: zodResolver(formSchema),
     defaultValues: {
@@ -50,37 +37,19 @@ export function InitialModal() {
 
   const isLoading = form.formState.isSubmitting;
 
-  // Handle form submission
   const onSubmit = async (values: z.infer<typeof formSchema>) => {
-    try {
-      const token = await getToken(); // Retrieve the token
-      if (!token) {
-        console.error("No authentication token found.");
-        return;
-      }
-
-      await axios.post(
-        "/api/servers",
-        values,
-        {
-          headers: {
-            Authorization: `Bearer ${token}`, // Pass the token in the request headers
-          },
-        }
-      );
-
+    try
+    {
+      await axios.post("/api/servers", values);
       form.reset();
       router.refresh();
+      window.location.reload();
     } catch (error) {
-      console.error("An error occurred while creating the server:", error);
+      console.error(error);
     }
   };
 
-  useEffect(() => {
-    setIsMounted(true); // Ensure component mounts in client environment
-  }, []);
-
-  if (!isMounted) return null; // Avoid rendering on the server
+  if (!isMounted) return null; 
 
   return (
     <Dialog open>

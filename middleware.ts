@@ -1,6 +1,8 @@
 import { clerkMiddleware } from '@clerk/nextjs/server';
 
-export default clerkMiddleware();
+export default clerkMiddleware({
+  
+});
 
 // You can specify routes to protect in the `matcher` export
 export const config = {
