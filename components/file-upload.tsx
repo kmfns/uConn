@@ -1,33 +1,40 @@
-// components/file-upload.tsx
-
-"use client";
-
-import { useDropzone } from "@uploadthing/react"; // Importuj komponent z uploadthing
-import { generateClientDropzoneAccept } from "uploadthing/client"; // Funkcja generująca akceptowane typy plików
+import { UploadDropzone } from "@uploadthing/react";
+import "@uploadthing/react/styles.css";
+import { OurFileRouter } from "@/lib/uploadthing";
 
 interface FileUploadProps {
-  onChange: (url?: string) => void;
   value: string;
-  endpoint: "imageUploader" | "serverImage" | "messageFile"; // Endpointy uploadthing
+  onChange: (value: string) => void;
+  endpoint: keyof OurFileRouter; // Restrict to valid router endpoints
 }
 
-export const FileUpload = ({ onChange, value, endpoint }: FileUploadProps) => {
-  const { getRootProps, getInputProps } = useDropzone({
-    accept: generateClientDropzoneAccept(["image/jpeg", "image/png"]), // Określamy akceptowane typy plików
-    onDrop: (acceptedFiles) => {
-      const file = acceptedFiles[0]; // Wybieramy pierwszy plik
-      if (file) {
-        // Zaczynamy upload pliku
-        onChange(URL.createObjectURL(file)); // Zmieniamy URL po załadowaniu pliku
-      }
-    },
-  });
-
-  return (
-    <div {...getRootProps()} className="border-2 border-dashed p-4 text-center">
-      <input {...getInputProps()} />
-      <p>Przeciągnij plik tutaj lub kliknij, aby wybrać</p>
-      {value && <img src={value} alt="Uploaded preview" className="w-20 h-20 mt-4" />}
+export const FileUpload = ({ value, onChange, endpoint }: FileUploadProps) => {
+  return value ? (
+    <div className="relative">
+      <img
+        src={value}
+        alt="Uploaded file"
+        className="h-20 w-20 rounded-full object-cover"
+      />
+      <button
+        type="button"
+        onClick={() => onChange("")}
+        className="absolute top-0 right-0 bg-red-500 text-white p-1 rounded-full"
+      >
+        X
+      </button>
     </div>
+  ) : (
+    <UploadDropzone<OurFileRouter, "imageUploader">
+      endpoint={endpoint}
+      onClientUploadComplete={(res) => {
+        if (res?.[0]?.url) {
+          onChange(res[0].url);
+        }
+      }}
+      onUploadError={(error) => {
+        console.error("Upload error:", error);
+      }}
+    />
   );
 };

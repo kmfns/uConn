@@ -15,8 +15,9 @@
     "moduleResolution": "node",
     "resolveJsonModule": true,
     "isolatedModules": true,
-    "jsx": "preserve", // Ensure this is set to "react-jsx" for React 17+
+    "jsx": "preserve", // Set to "react-jsx" for React 17+ or Next.js
     "incremental": true,
+    "baseUrl": ".", // Added for clarity; ensures base imports resolve correctly
     "plugins": [
       {
         "name": "next"
@@ -25,7 +26,7 @@
     "paths": {
       "~/*": [
         "./*"
-      ], // Optional: to support absolute imports with '~'
+      ],
       "@/*": [
         "./*"
       ]
@@ -38,6 +39,7 @@
     ".next/types/**/*.ts"
   ],
   "exclude": [
-    "node_modules"
+    "node_modules",
+    "build" // Optional: if you have a build directory
   ]
 }

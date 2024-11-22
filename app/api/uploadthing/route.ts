@@ -1,11 +1,12 @@
 import { createRouteHandler } from "uploadthing/next";
+import { ourFileRouter } from "./core"; // Ensure correct import of your file router
 
-import { ourFileRouter } from "./core";
-
-// Export routes for Next App Router
+// Create route handlers for GET and POST requests
 export const { GET, POST } = createRouteHandler({
   router: ourFileRouter,
 
-  // Apply an (optional) custom config:
-  // config: { ... },
+  // Optional: Add custom configurations (if necessary)
+  // config: {
+  //   maxFileSize: "4MB", // Example: Global file size restriction
+  // },
 });
